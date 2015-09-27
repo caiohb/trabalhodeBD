@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
+<!-- 2015-09-27T00:48:01 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DOWN_10_PRODUTO_ACUMULADO" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d13a6452-cd3f-4416-991e-942740260829">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="DOWN_10_PRODUTO_ACUMULADO" uuid="5267776d-7e7f-4f1a-a1c9-3900b08b3fb8">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
+		<queryString>
+			<![CDATA[ SELECT P.NOME, PROD_ACUM.TOTAL_PRODUTO_ACUM
+  FROM JANELA_QTDE_PROD_ACUM PROD_ACUM
+  INNER JOIN PRODUTO P
+  ON P.COD_PRODUTO = PROD_ACUM.COD_PRODUTO,
+	(SELECT COD_PRODUTO, TOTAL_PRODUTO_ACUM, RANK() OVER (ORDER BY TOTAL_PRODUTO_ACUM, COD_PRODUTO) AS RANKING
+  FROM JANELA_QTDE_PROD_ACUM) SUB
+  WHERE RANKING <=10
+  AND SUB.COD_PRODUTO = PROD_ACUM.COD_PRODUTO
+  ORDER BY PROD_ACUM.TOTAL_PRODUTO_ACUM]]>
+		</queryString>
+		<field name="NOME" class="java.lang.String"/>
+		<field name="TOTAL_PRODUTO_ACUM" class="java.math.BigDecimal"/>
+		<group name="NOME">
+			<groupExpression><![CDATA[$F{NOME}]]></groupExpression>
+		</group>
+		<group name="TOTAL_PRODUTO_ACUM">
+			<groupExpression><![CDATA[$F{TOTAL_PRODUTO_ACUM}]]></groupExpression>
+		</group>
+	</subDataset>
+	<queryString>
+		<![CDATA[ SELECT P.NOME, PROD_ACUM.TOTAL_PRODUTO_ACUM
+  FROM JANELA_QTDE_PROD_ACUM PROD_ACUM
+  INNER JOIN PRODUTO P
+  ON P.COD_PRODUTO = PROD_ACUM.COD_PRODUTO,
+	(SELECT COD_PRODUTO, TOTAL_PRODUTO_ACUM, RANK() OVER (ORDER BY TOTAL_PRODUTO_ACUM, COD_PRODUTO) AS RANKING
+  FROM JANELA_QTDE_PROD_ACUM) SUB
+  WHERE RANKING <=10
+  AND SUB.COD_PRODUTO = PROD_ACUM.COD_PRODUTO
+  ORDER BY PROD_ACUM.TOTAL_PRODUTO_ACUM]]>
+	</queryString>
+	<field name="NOME" class="java.lang.String"/>
+	<field name="TOTAL_PRODUTO_ACUM" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="290" splitType="Stretch">
+			<componentElement>
+				<reportElement x="130" y="110" width="300" height="150" uuid="db4566b3-2efe-4e3d-a3bf-3c8543d85bac">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="DOWN_10_PRODUTO_ACUMULADO" uuid="334f39a4-3e68-426d-8962-673d24d300b5">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="150" uuid="9aef3b17-ab2e-43fc-b2e6-3697870ac367">
+						<jr:tableHeader style="Table_TH" height="30"/>
+						<jr:tableFooter style="Table_TH" height="30"/>
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="150" height="30" uuid="af97fd81-dd70-44ee-8026-4ed9ad9e46a0"/>
+								<text><![CDATA[NOME]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table_CH" height="30"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="150" height="30" uuid="3706ffb6-1c58-40bd-8d48-d5f163ae1311"/>
+								<textFieldExpression><![CDATA[$F{NOME}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="150" uuid="b82d0265-ef7f-4c5c-a687-3a6a9e96b681">
+						<jr:tableHeader style="Table_TH" height="30"/>
+						<jr:tableFooter style="Table_TH" height="30"/>
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="150" height="30" uuid="90c8f029-5cdc-4401-be3a-b4d527204bfa"/>
+								<text><![CDATA[TOTAL_PRODUTO_ACUM]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table_CH" height="30"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="150" height="30" uuid="cdaf1f8e-f660-484d-9cb3-f9a50e92cd2e"/>
+								<textFieldExpression><![CDATA[$F{TOTAL_PRODUTO_ACUM}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<staticText>
+				<reportElement x="153" y="20" width="277" height="31" uuid="99bd12e6-37ec-4abf-b3d1-5e3c9ee41891"/>
+				<textElement>
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[Down 10 Produtos Acumulado]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
+<!-- 2015-09-27T00:51:52 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TOP_10_PRODUTO_ACUMULADO" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="22fb4526-468b-4b50-a49b-9c0623b2ba88">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="TOP_10_PRODUTO_ACUMULADO" uuid="2f989dbb-f049-4c65-96cd-03d689cfda99">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
+		<queryString>
+			<![CDATA[SELECT PROD.NOME, PROD_ACUM.TOTAL_PRODUTO_ACUM
+	FROM JANELA_QTDE_PROD_ACUM PROD_ACUM 
+  INNER JOIN PRODUTO PROD
+  ON PROD.COD_PRODUTO = PROD_ACUM.COD_PRODUTO,
+	(SELECT COD_PRODUTO, TOTAL_PRODUTO_ACUM, RANK() OVER (ORDER BY TOTAL_PRODUTO_ACUM DESC) AS RANKING
+		FROM JANELA_QTDE_PROD_ACUM) SUB
+	WHERE RANKING <=10
+	AND SUB.COD_PRODUTO = PROD_ACUM.COD_PRODUTO
+	ORDER BY PROD_ACUM.TOTAL_PRODUTO_ACUM DESC]]>
+		</queryString>
+		<field name="NOME" class="java.lang.String"/>
+		<field name="TOTAL_PRODUTO_ACUM" class="java.math.BigDecimal"/>
+		<group name="COD_PRODUTO">
+			<groupExpression><![CDATA[$F{NOME}]]></groupExpression>
+		</group>
+		<group name="TOTAL_PRODUTO_ACUM">
+			<groupExpression><![CDATA[$F{TOTAL_PRODUTO_ACUM}]]></groupExpression>
+		</group>
+	</subDataset>
+	<queryString>
+		<![CDATA[SELECT PROD.NOME, PROD_ACUM.COD_PRODUTO, PROD_ACUM.TOTAL_PRODUTO_ACUM
+	FROM JANELA_QTDE_PROD_ACUM PROD_ACUM 
+  INNER JOIN PRODUTO PROD
+  ON PROD.COD_PRODUTO = PROD_ACUM.COD_PRODUTO,
+	(SELECT COD_PRODUTO, TOTAL_PRODUTO_ACUM, RANK() OVER (ORDER BY TOTAL_PRODUTO_ACUM DESC) AS RANKING
+		FROM JANELA_QTDE_PROD_ACUM) SUB
+	WHERE RANKING <=10
+	AND SUB.COD_PRODUTO = PROD_ACUM.COD_PRODUTO
+	ORDER BY PROD_ACUM.TOTAL_PRODUTO_ACUM DESC]]>
+	</queryString>
+	<field name="NOME" class="java.lang.String"/>
+	<field name="TOTAL_PRODUTO_ACUM" class="java.math.BigDecimal"/>
+	<group name="COD_PRODUTO">
+		<groupExpression><![CDATA[$F{NOME}]]></groupExpression>
+	</group>
+	<group name="TOTAL_PRODUTO_ACUM">
+		<groupExpression><![CDATA[$F{TOTAL_PRODUTO_ACUM}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="280" splitType="Stretch">
+			<staticText>
+				<reportElement x="153" y="20" width="267" height="31" uuid="dcd3648e-412e-4bf6-9d35-3eb3c2697772"/>
+				<textElement>
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[TOP 10 Produtos Acumulado]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="130" y="80" width="300" height="150" uuid="979df73e-d99a-4dfb-bb52-1f1c559da628">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="TOP_10_PRODUTO_ACUMULADO" uuid="788478f8-0571-49f6-9056-be8e51a9ede2">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="150" uuid="028caff3-b20d-4efc-939b-892cfbaea3d7">
+						<jr:tableHeader style="Table_TH" height="30"/>
+						<jr:tableFooter style="Table_TH" height="30"/>
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="150" height="30" uuid="8bc6edcb-a71a-4ec5-b191-e2299f087f41"/>
+								<text><![CDATA[NOME PRODUTO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table_CH" height="30"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="150" height="30" uuid="e797017c-b799-45e9-a477-029a161b6ce3"/>
+								<textFieldExpression><![CDATA[$F{NOME}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="150" uuid="983ed882-6901-444a-83ea-8f02407d81e9">
+						<jr:tableHeader style="Table_TH" height="30"/>
+						<jr:tableFooter style="Table_TH" height="30"/>
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="150" height="30" uuid="8189f476-850e-40b7-98d1-dff95c37e23d"/>
+								<text><![CDATA[TOTAL_PRODUTO_ACUM]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table_CH" height="30"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="150" height="30" uuid="44eea287-ab48-4931-adb7-dddc2521540b"/>
+								<textFieldExpression><![CDATA[$F{TOTAL_PRODUTO_ACUM}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</title>
+</jasperReport>

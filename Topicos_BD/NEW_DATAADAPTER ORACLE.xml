@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jdbcDataAdapter class="net.sf.jasperreports.data.jdbc.JdbcDataAdapterImpl"><name>Oracle Adaptor</name><driver>oracle.jdbc.driver.OracleDriver</driver><username>barbosac</username><password>12345</password><savePassword>true</savePassword><url>jdbc:oracle:thin:@localhost:1521:XE</url><database></database><serverAddress></serverAddress><classpath>C:\Program Files\Java\jdk1.7.0_80\jre\lib\ext\ojdbc6.jar</classpath></jdbcDataAdapter>
