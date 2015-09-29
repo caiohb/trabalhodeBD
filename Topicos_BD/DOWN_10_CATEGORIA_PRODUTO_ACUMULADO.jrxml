@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
-<!-- 2015-09-29T03:02:40 -->
+<!-- 2015-09-29T11:57:24 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TOP_10_CATEGORIA_PRODUTO_ACUMULADO" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="69bbfa0d-7cd2-4688-afb0-00be66b5ded9">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
@@ -35,7 +35,7 @@
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
 		<queryString>
-			<![CDATA[  SELECT CAT.NOM_CATEGORIA_PRODUTO, CAT_PROD_ACUM."TOTAL_CAT_PRODUTO_DIA"
+			<![CDATA[SELECT CAT.NOM_CATEGORIA_PRODUTO, CAT_PROD_ACUM."TOTAL_CAT_PRODUTO_DIA", CAT_PROD_ACUM."VLR_VENDA"
   FROM JANELA_CAT_PROD_ACUM CAT_PROD_ACUM
   INNER JOIN CATEGORIA_PRODUTO CAT
   ON CAT.COD_CATEGORIA_PRODUTO = CAT_PROD_ACUM."COD_CATEGORIA_PRODUTO",
@@ -45,10 +45,11 @@
   WHERE CATEGORIAS_MAIS_VENDIDAS <=10
   AND SUB."COD_CATEGORIA_PRODUTO" = CAT_PROD_ACUM."COD_CATEGORIA_PRODUTO"
   AND SUB."TOTAL_CAT_PRODUTO_DIA" = CAT_PROD_ACUM."TOTAL_CAT_PRODUTO_DIA"
-  ORDER BY CAT_PROD_ACUM."TOTAL_CAT_PRODUTO_DIA" ]]>
+  ORDER BY CAT_PROD_ACUM."TOTAL_CAT_PRODUTO_DIA"]]>
 		</queryString>
 		<field name="nom_categoria_produto" class="java.lang.String"/>
 		<field name="TOTAL_CAT_PRODUTO_DIA" class="java.lang.Long"/>
+		<field name="VLR_VENDA" class="java.math.BigDecimal"/>
 		<group name="nom_categoria_produto">
 			<groupExpression><![CDATA[$F{nom_categoria_produto}]]></groupExpression>
 		</group>
@@ -57,7 +58,7 @@
 		</group>
 	</subDataset>
 	<queryString>
-		<![CDATA[  SELECT CAT.NOM_CATEGORIA_PRODUTO, CAT_PROD_ACUM."TOTAL_CAT_PRODUTO_DIA"
+		<![CDATA[SELECT CAT.NOM_CATEGORIA_PRODUTO, CAT_PROD_ACUM."TOTAL_CAT_PRODUTO_DIA", CAT_PROD_ACUM."VLR_VENDA"
   FROM JANELA_CAT_PROD_ACUM CAT_PROD_ACUM
   INNER JOIN CATEGORIA_PRODUTO CAT
   ON CAT.COD_CATEGORIA_PRODUTO = CAT_PROD_ACUM."COD_CATEGORIA_PRODUTO",
@@ -67,10 +68,11 @@
   WHERE CATEGORIAS_MAIS_VENDIDAS <=10
   AND SUB."COD_CATEGORIA_PRODUTO" = CAT_PROD_ACUM."COD_CATEGORIA_PRODUTO"
   AND SUB."TOTAL_CAT_PRODUTO_DIA" = CAT_PROD_ACUM."TOTAL_CAT_PRODUTO_DIA"
-  ORDER BY CAT_PROD_ACUM."TOTAL_CAT_PRODUTO_DIA" ]]>
+  ORDER BY CAT_PROD_ACUM."TOTAL_CAT_PRODUTO_DIA"]]>
 	</queryString>
 	<field name="nom_categoria_produto" class="java.lang.String"/>
 	<field name="TOTAL_CAT_PRODUTO_DIA" class="java.lang.Long"/>
+	<field name="VLR_VENDA" class="java.math.BigDecimal"/>
 	<group name="nom_categoria_produto">
 		<groupExpression><![CDATA[$F{nom_categoria_produto}]]></groupExpression>
 	</group>
@@ -90,37 +92,57 @@
 					<datasetRun subDataset="top_10_categoria_produto_acumulado" uuid="8e07648e-1711-4ed4-8349-e29f4330ae43">
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:column width="150" uuid="e2de790e-03e7-4949-9966-a269a55a63ce">
+					<jr:column width="100" uuid="e2de790e-03e7-4949-9966-a269a55a63ce">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
 						<jr:tableHeader style="Table_TH" height="30"/>
 						<jr:tableFooter style="Table_TH" height="30"/>
 						<jr:columnHeader style="Table_CH" height="30">
 							<staticText>
-								<reportElement x="0" y="0" width="150" height="30" uuid="643ae20f-c911-400f-a872-9e80df0d0c1d"/>
-								<text><![CDATA[nom_categoria_produto]]></text>
+								<reportElement x="0" y="0" width="100" height="30" uuid="643ae20f-c911-400f-a872-9e80df0d0c1d"/>
+								<text><![CDATA[Categoria Produto]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter style="Table_CH" height="30"/>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField>
-								<reportElement x="0" y="0" width="150" height="30" uuid="7ea1a5b5-dbea-4a67-a69a-35497f379ae3"/>
+								<reportElement x="0" y="0" width="100" height="30" uuid="7ea1a5b5-dbea-4a67-a69a-35497f379ae3"/>
 								<textFieldExpression><![CDATA[$F{nom_categoria_produto}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="150" uuid="c013e7b9-a110-46a9-8e9f-41f97507a9f7">
+					<jr:column width="100" uuid="c013e7b9-a110-46a9-8e9f-41f97507a9f7">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
 						<jr:tableHeader style="Table_TH" height="30"/>
 						<jr:tableFooter style="Table_TH" height="30"/>
 						<jr:columnHeader style="Table_CH" height="30">
 							<staticText>
-								<reportElement x="0" y="0" width="150" height="30" uuid="0aa24bba-4560-4b69-ae77-660d926419c8"/>
-								<text><![CDATA[TOTAL_CAT_PRODUTO_DIA]]></text>
+								<reportElement x="0" y="0" width="100" height="30" uuid="0aa24bba-4560-4b69-ae77-660d926419c8"/>
+								<text><![CDATA[Total Itens Vendidos]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter style="Table_CH" height="30"/>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField>
-								<reportElement x="0" y="0" width="150" height="30" uuid="06b685e8-188d-4d01-bf26-c5316d35fc75"/>
+								<reportElement x="0" y="0" width="100" height="30" uuid="06b685e8-188d-4d01-bf26-c5316d35fc75"/>
 								<textFieldExpression><![CDATA[$F{TOTAL_CAT_PRODUTO_DIA}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="89687dd8-4b22-4b25-be5e-ca2ee46dd9bc">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:tableHeader style="Table_TH" height="30"/>
+						<jr:tableFooter style="Table_TH" height="30"/>
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="1c83f52f-af0d-4fc1-91e5-e4b6422628ab"/>
+								<text><![CDATA[Valor Venda]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table_CH" height="30"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="65a8f70d-ddab-4e63-80e1-222dee036832"/>
+								<textFieldExpression><![CDATA[$F{VLR_VENDA}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

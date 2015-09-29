@@ -411,7 +411,7 @@ public class ReportWindow extends javax.swing.JFrame {
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
        try {
         previousWindow.connect.executeSQL(
-                    " SELECT CAT.NOM_CATEGORIA_PRODUTO, CAT_PROD_ACUM.\"TOTAL_CAT_PRODUTO_DIA\"\n" +
+                    " SELECT CAT.NOM_CATEGORIA_PRODUTO, CAT_PROD_ACUM.\"TOTAL_CAT_PRODUTO_DIA\", CAT_PROD_ACUM.\"VLR_VENDA\"\n" +
 "  FROM JANELA_CAT_PROD_ACUM CAT_PROD_ACUM\n" +
 "  INNER JOIN CATEGORIA_PRODUTO CAT\n" +
 "  ON CAT.COD_CATEGORIA_PRODUTO = CAT_PROD_ACUM.\"COD_CATEGORIA_PRODUTO\",\n" +
@@ -439,7 +439,7 @@ public class ReportWindow extends javax.swing.JFrame {
         // TODO add your handling code here:DOWN_10_CATEGORIA_PRODUTO_DIARIO
         try {
         previousWindow.connect.executeSQL(
-                    " SELECT CAT_DIA.\"DATA_VENDA\", CAT.NOM_CATEGORIA_PRODUTO, CAT_DIA.\"TOTAL_CAT_PRODUTO_DIA\"\n" +
+                    " SELECT CAT_DIA.\"DATA_VENDA\", CAT.NOM_CATEGORIA_PRODUTO, CAT_DIA.\"TOTAL_CAT_PRODUTO_DIA\", CAT_DIA.\"vlr_venda\"\n" +
 "  FROM JANELA_QTDE_CAT_PROD_DIA CAT_DIA\n" +
 "  INNER JOIN CATEGORIA_PRODUTO CAT\n" +
 "  ON CAT.COD_CATEGORIA_PRODUTO = CAT_DIA.\"COD_CATEGORIA_PRODUTO\",\n" +
