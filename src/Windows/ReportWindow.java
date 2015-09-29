@@ -112,6 +112,11 @@ public class ReportWindow extends javax.swing.JFrame {
         });
 
         jButton6.setText("Acumulado Produto Ranking");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setText("Top 10 Cat. Produto (Diário)");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -121,6 +126,11 @@ public class ReportWindow extends javax.swing.JFrame {
         });
 
         jButton8.setText("Down 10 Cat. Produto (Diário)");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         jButton9.setText("Top 10 Cat. Produto (Acum.)");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
@@ -130,6 +140,11 @@ public class ReportWindow extends javax.swing.JFrame {
         });
 
         jButton10.setText("Down 10 Cat. Produto (Acum.)");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -279,13 +294,37 @@ public class ReportWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
+        try {
+        previousWindow.connect.executeSQL(
+                    "    SELECT CAT_DIA.\"DATA_VENDA\", CAT.NOM_CATEGORIA_PRODUTO, CAT_DIA.\"TOTAL_CAT_PRODUTO_DIA\", CAT_DIA.\"vlr_venda\"\n" +
+"  FROM JANELA_QTDE_CAT_PROD_DIA CAT_DIA\n" +
+"  INNER JOIN CATEGORIA_PRODUTO CAT\n" +
+"  ON CAT.COD_CATEGORIA_PRODUTO = CAT_DIA.\"COD_CATEGORIA_PRODUTO\",\n" +
+"  (SELECT \"DATA_VENDA\", \"COD_CATEGORIA_PRODUTO\", \"TOTAL_CAT_PRODUTO_DIA\",\n" +
+"    RANK() OVER (PARTITION BY \"DATA_VENDA\", \"COD_CATEGORIA_PRODUTO\" ORDER BY  \"TOTAL_CAT_PRODUTO_DIA\" DESC, \"COD_CATEGORIA_PRODUTO\") AS RANKING\n" +
+"  FROM JANELA_QTDE_CAT_PROD_DIA) SUB\n" +
+"  WHERE RANKING <= 10\n" +
+"  AND SUB.\"DATA_VENDA\" = CAT_DIA.\"DATA_VENDA\"\n" +
+"  AND SUB.\"COD_CATEGORIA_PRODUTO\" = CAT_DIA.\"COD_CATEGORIA_PRODUTO\"\n" +
+"  AND SUB.\"TOTAL_CAT_PRODUTO_DIA\" = CAT_DIA.\"TOTAL_CAT_PRODUTO_DIA\"\n" +
+"  ORDER BY CAT_DIA.\"DATA_VENDA\", CAT_DIA.\"TOTAL_CAT_PRODUTO_DIA\" DESC");
+            JRResultSetDataSource reportResult = new JRResultSetDataSource(previousWindow.connect.rs);
+            Map parametros = new HashMap();
+            parametros.put("REPORT_CONNECTION", previousWindow.connect.conn);
+            JasperPrint jpPrint = JasperFillManager.fillReport("Topicos_BD/TOP_10_CATEGORIA_PRODUTO_DIARIO.jasper", parametros , reportResult);
+            
+            JasperViewer jv = new JasperViewer(jpPrint, false);
+            //jv.setVisible(true);
+            JasperViewer.viewReport(jpPrint, false);
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Erro ao chamar o relatório! \nErro:" + ex.getMessage());
+        }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
              try {
         previousWindow.connect.executeSQL(
-                    "SELECT CAT.nom_categoria_produto, CAT_PROD_ACUM.\"TOTAL_CAT_PRODUTO_DIA\"\n" +
+                    "SELECT CAT.NOM_CATEGORIA_PRODUTO, CAT_PROD_ACUM.\"TOTAL_CAT_PRODUTO_DIA\", CAT_PROD_ACUM.\"VLR_VENDA\"\n" +
 "  FROM JANELA_CAT_PROD_ACUM CAT_PROD_ACUM\n" +
 "  INNER JOIN CATEGORIA_PRODUTO CAT\n" +
 "  ON CAT.COD_CATEGORIA_PRODUTO = CAT_PROD_ACUM.\"COD_CATEGORIA_PRODUTO\",\n" +
@@ -368,6 +407,84 @@ public class ReportWindow extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+       try {
+        previousWindow.connect.executeSQL(
+                    " SELECT CAT.NOM_CATEGORIA_PRODUTO, CAT_PROD_ACUM.\"TOTAL_CAT_PRODUTO_DIA\"\n" +
+"  FROM JANELA_CAT_PROD_ACUM CAT_PROD_ACUM\n" +
+"  INNER JOIN CATEGORIA_PRODUTO CAT\n" +
+"  ON CAT.COD_CATEGORIA_PRODUTO = CAT_PROD_ACUM.\"COD_CATEGORIA_PRODUTO\",\n" +
+"    (SELECT \"COD_CATEGORIA_PRODUTO\", \"TOTAL_CAT_PRODUTO_DIA\", \n" +
+"      RANK() OVER (ORDER BY \"TOTAL_CAT_PRODUTO_DIA\" , \"COD_CATEGORIA_PRODUTO\") AS CATEGORIAS_MAIS_VENDIDAS \n" +
+"  FROM JANELA_CAT_PROD_ACUM) SUB\n" +
+"  WHERE CATEGORIAS_MAIS_VENDIDAS <=10\n" +
+"  AND SUB.\"COD_CATEGORIA_PRODUTO\" = CAT_PROD_ACUM.\"COD_CATEGORIA_PRODUTO\"\n" +
+"  AND SUB.\"TOTAL_CAT_PRODUTO_DIA\" = CAT_PROD_ACUM.\"TOTAL_CAT_PRODUTO_DIA\"\n" +
+"  ORDER BY CAT_PROD_ACUM.\"TOTAL_CAT_PRODUTO_DIA\"");
+            JRResultSetDataSource reportResult = new JRResultSetDataSource(previousWindow.connect.rs);
+            Map parametros = new HashMap();
+            parametros.put("REPORT_CONNECTION", previousWindow.connect.conn);
+            JasperPrint jpPrint = JasperFillManager.fillReport("Topicos_BD/DOWN_10_CATEGORIA_PRODUTO_ACUMULADO.jasper", parametros , reportResult);
+            
+            JasperViewer jv = new JasperViewer(jpPrint, false);
+            //jv.setVisible(true);
+            JasperViewer.viewReport(jpPrint, false);
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Erro ao chamar o relatório! \nErro:" + ex.getMessage());
+        }
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:DOWN_10_CATEGORIA_PRODUTO_DIARIO
+        try {
+        previousWindow.connect.executeSQL(
+                    " SELECT CAT_DIA.\"DATA_VENDA\", CAT.NOM_CATEGORIA_PRODUTO, CAT_DIA.\"TOTAL_CAT_PRODUTO_DIA\"\n" +
+"  FROM JANELA_QTDE_CAT_PROD_DIA CAT_DIA\n" +
+"  INNER JOIN CATEGORIA_PRODUTO CAT\n" +
+"  ON CAT.COD_CATEGORIA_PRODUTO = CAT_DIA.\"COD_CATEGORIA_PRODUTO\",\n" +
+"  (SELECT \"DATA_VENDA\", \"COD_CATEGORIA_PRODUTO\", \"TOTAL_CAT_PRODUTO_DIA\",\n" +
+"    RANK() OVER (PARTITION BY \"DATA_VENDA\", \"COD_CATEGORIA_PRODUTO\" ORDER BY  \"TOTAL_CAT_PRODUTO_DIA\" , \"COD_CATEGORIA_PRODUTO\") AS RANKING\n" +
+"  FROM JANELA_QTDE_CAT_PROD_DIA) SUB\n" +
+"  WHERE RANKING <= 10\n" +
+"  AND SUB.\"DATA_VENDA\" = CAT_DIA.\"DATA_VENDA\"\n" +
+"  AND SUB.\"COD_CATEGORIA_PRODUTO\" = CAT_DIA.\"COD_CATEGORIA_PRODUTO\"\n" +
+"  AND SUB.\"TOTAL_CAT_PRODUTO_DIA\" = CAT_DIA.\"TOTAL_CAT_PRODUTO_DIA\"\n" +
+"  ORDER BY CAT_DIA.\"DATA_VENDA\", CAT_DIA.\"TOTAL_CAT_PRODUTO_DIA\"");
+            JRResultSetDataSource reportResult = new JRResultSetDataSource(previousWindow.connect.rs);
+            Map parametros = new HashMap();
+            parametros.put("REPORT_CONNECTION", previousWindow.connect.conn);
+            JasperPrint jpPrint = JasperFillManager.fillReport("Topicos_BD/DOWN_10_CATEGORIA_PRODUTO_DIARIO.jasper", parametros , reportResult);
+            
+            JasperViewer jv = new JasperViewer(jpPrint, false);
+            //jv.setVisible(true);
+            JasperViewer.viewReport(jpPrint, false);
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Erro ao chamar o relatório! \nErro:" + ex.getMessage());
+        }
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        //acumulado_prod_dia_ranking
+        try {
+        previousWindow.connect.executeSQL(
+                    " SELECT DISTINCT JANELA.\"DATA_VENDA\", \"QUANTIDADE_TOTAL_PRODUTO_DIA\",\n" +
+"  \"QUANTIDADE_TOTAL_PRODUTO_DIA\"/SUM(\"QUANTIDADE_TOTAL_PRODUTO_DIA\") OVER () * 100, 2   AS PORCENTAGEM \n" +
+"  FROM JANELA_QUANTIDADE JANELA\n" +
+"  ORDER BY \"QUANTIDADE_TOTAL_PRODUTO_DIA\" DESC");
+            JRResultSetDataSource reportResult = new JRResultSetDataSource(previousWindow.connect.rs);
+            Map parametros = new HashMap();
+            parametros.put("REPORT_CONNECTION", previousWindow.connect.conn);
+            JasperPrint jpPrint = JasperFillManager.fillReport("Topicos_BD/ACUMULADO_PRODUTO_DIA_RANKING.jasper", parametros , reportResult);
+            
+            JasperViewer jv = new JasperViewer(jpPrint, false);
+            //jv.setVisible(true);
+            JasperViewer.viewReport(jpPrint, false);
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Erro ao chamar o relatório! \nErro:" + ex.getMessage());
+        }
+        
+    }//GEN-LAST:event_jButton6ActionPerformed
     /**
      * @param args the command line arguments
      */
