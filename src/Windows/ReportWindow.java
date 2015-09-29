@@ -241,7 +241,7 @@ public class ReportWindow extends javax.swing.JFrame {
         
         try {
         previousWindow.connect.executeSQL(
-                    "SELECT PROD.nome, PROD_ACUM.\"TOTAL_PRODUTO_ACUM\"\n" +
+                    " SELECT PROD.NOME, PROD_ACUM.\"TOTAL_PRODUTO_ACUM\", PROD_ACUM.\"VLR_VENDA\", \"VLR_VENDA\"/PROD_ACUM.\"TOTAL_PRODUTO_ACUM\" AS MEDIA\n" +
 "	FROM JANELA_QTDE_PROD_ACUM PROD_ACUM \n" +
 "  INNER JOIN PRODUTO PROD\n" +
 "  ON PROD.COD_PRODUTO = PROD_ACUM.\"COD_PRODUTO\",\n" +
@@ -270,9 +270,9 @@ public class ReportWindow extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
               try {
         previousWindow.connect.executeSQL(
-                    "SELECT JANELA.\"DATA_VENDA\", P.nome, JANELA.\"TOTAL_PRODUTO_DIA\"\n" +
+                    "SELECT JANELA.\"DATA_VENDA\", P.NOME, JANELA.\"TOTAL_PRODUTO_DIA\", JANELA.\"VLR_VENDA\", JANELA.\"VLR_VENDA\"/JANELA.\"TOTAL_PRODUTO_DIA\" AS MEDIA\n" +
 "    FROM JANELA_QUANTIDADE_PRODUTO_DIA JANELA\n" +
-"    INNER JOIN PRODUTO P\n" +
+"    INNER JOIN PRODUTO AS P\n" +
 "    ON P.COD_PRODUTO = JANELA.\"COD_PRODUTO\",\n" +
 "    (SELECT \"DATA_VENDA\", \"COD_PRODUTO\", RANK() OVER (PARTITION BY \"DATA_VENDA\" ORDER BY \"TOTAL_PRODUTO_DIA\" DESC) AS PRODUTOS_MAIS_VENDIDOS\n" +
 "    FROM JANELA_QUANTIDADE_PRODUTO_DIA) SUB\n" +
@@ -355,15 +355,15 @@ public class ReportWindow extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         try {
         previousWindow.connect.executeSQL(
-                    "SELECT P.nome, PROD_ACUM.\"TOTAL_PRODUTO_ACUM\"\n" +
-"  FROM JANELA_QTDE_PROD_ACUM PROD_ACUM\n" +
-"  INNER JOIN PRODUTO P\n" +
-"  ON P.COD_PRODUTO = PROD_ACUM.\"COD_PRODUTO\",\n" +
-"	(SELECT \"COD_PRODUTO\", \"TOTAL_PRODUTO_ACUM\", RANK() OVER (ORDER BY \"TOTAL_PRODUTO_ACUM\", \"COD_PRODUTO\") AS RANKING\n" +
-"  FROM JANELA_QTDE_PROD_ACUM) SUB\n" +
-"  WHERE RANKING <=10\n" +
-"  AND SUB.\"COD_PRODUTO\" = PROD_ACUM.\"COD_PRODUTO\"\n" +
-"  ORDER BY PROD_ACUM.\"TOTAL_PRODUTO_ACUM\"");
+                    "SELECT PROD.NOME, PROD_ACUM.\"TOTAL_PRODUTO_ACUM\", PROD_ACUM.\"VLR_VENDA\", \"VLR_VENDA\"/PROD_ACUM.\"TOTAL_PRODUTO_ACUM\" AS MEDIA\n" +
+"	FROM JANELA_QTDE_PROD_ACUM PROD_ACUM \n" +
+"  INNER JOIN PRODUTO PROD\n" +
+"  ON PROD.COD_PRODUTO = PROD_ACUM.\"COD_PRODUTO\",\n" +
+"	(SELECT \"COD_PRODUTO\", \"TOTAL_PRODUTO_ACUM\", RANK() OVER (ORDER BY \"TOTAL_PRODUTO_ACUM\") AS RANKING\n" +
+"		FROM JANELA_QTDE_PROD_ACUM) SUB\n" +
+"	WHERE RANKING <=10\n" +
+"	AND SUB.\"COD_PRODUTO\" = PROD_ACUM.\"COD_PRODUTO\"\n" +
+"	ORDER BY PROD_ACUM.\"TOTAL_PRODUTO_ACUM\"");
             JRResultSetDataSource reportResult = new JRResultSetDataSource(previousWindow.connect.rs);
             Map parametros = new HashMap();
             parametros.put("REPORT_CONNECTION", previousWindow.connect.conn);
@@ -384,7 +384,7 @@ public class ReportWindow extends javax.swing.JFrame {
 
          try {
         previousWindow.connect.executeSQL(
-                    "SELECT JANELA.\"DATA_VENDA\", P.NOME, JANELA.\"TOTAL_PRODUTO_DIA\"\n" +
+                    "SELECT JANELA.\"DATA_VENDA\", P.NOME, JANELA.\"TOTAL_PRODUTO_DIA\", JANELA.\"VLR_VENDA\", JANELA.\"VLR_VENDA\"/JANELA.\"TOTAL_PRODUTO_DIA\" AS MEDIA\n" +
 "    FROM JANELA_QUANTIDADE_PRODUTO_DIA JANELA\n" +
 "    INNER JOIN PRODUTO P\n" +
 "    ON P.COD_PRODUTO = JANELA.\"COD_PRODUTO\",\n" +

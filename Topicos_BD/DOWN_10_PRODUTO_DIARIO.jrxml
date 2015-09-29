@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
-<!-- 2015-09-28T20:46:05 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DOWN_10_PRODUTO_DIARIO" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0e4811eb-3b6b-4ea9-b9ad-6fa6b90d5b62">
+<!-- 2015-09-29T12:59:39 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TOP10_PRODUTO_ACUMULADO" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ae12fb92-0cec-4789-af3f-dda079cde590">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
@@ -31,28 +31,30 @@
 			<rightPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<subDataset name="DOWN_10_PRODUTO_DIARIO" uuid="b4653500-cb2a-44af-b776-a33c73822dd3">
+	<subDataset name="RANKING_PRODUTO" uuid="a698c026-006b-44e9-b255-1f4b513dcd43">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
 		<queryString>
-			<![CDATA[SELECT JANELA."DATA_VENDA", P.NOME, JANELA."TOTAL_PRODUTO_DIA"
+			<![CDATA[SELECT JANELA."DATA_VENDA", P.NOME, JANELA."TOTAL_PRODUTO_DIA", JANELA."VLR_VENDA", JANELA."VLR_VENDA"/JANELA."TOTAL_PRODUTO_DIA" AS MEDIA
     FROM JANELA_QUANTIDADE_PRODUTO_DIA JANELA
-    INNER JOIN PRODUTO P
+    INNER JOIN PRODUTO AS P
     ON P.COD_PRODUTO = JANELA."COD_PRODUTO",
-    (SELECT "DATA_VENDA", "COD_PRODUTO", RANK() OVER (PARTITION BY "DATA_VENDA" ORDER BY "TOTAL_PRODUTO_DIA", "COD_PRODUTO") AS PRODUTOS_MAIS_VENDIDOS
+    (SELECT "DATA_VENDA", "COD_PRODUTO", RANK() OVER (PARTITION BY "DATA_VENDA" ORDER BY "TOTAL_PRODUTO_DIA" ) AS PRODUTOS_MAIS_VENDIDOS
     FROM JANELA_QUANTIDADE_PRODUTO_DIA) SUB
   WHERE PRODUTOS_MAIS_VENDIDOS <=10
   AND SUB."DATA_VENDA" = JANELA."DATA_VENDA"
   AND SUB."COD_PRODUTO" = JANELA."COD_PRODUTO"
-  ORDER BY "DATA_VENDA", "TOTAL_PRODUTO_DIA", JANELA."COD_PRODUTO"]]>
+  ORDER BY "DATA_VENDA", "TOTAL_PRODUTO_DIA" , JANELA."COD_PRODUTO"]]>
 		</queryString>
 		<field name="DATA_VENDA" class="java.sql.Timestamp"/>
 		<field name="nome" class="java.lang.String"/>
 		<field name="TOTAL_PRODUTO_DIA" class="java.lang.Long"/>
+		<field name="VLR_VENDA" class="java.math.BigDecimal"/>
+		<field name="media" class="java.math.BigDecimal"/>
 		<group name="DATA_VENDA">
 			<groupExpression><![CDATA[$F{DATA_VENDA}]]></groupExpression>
 		</group>
-		<group name="nome">
+		<group name="COD_PRODUTO">
 			<groupExpression><![CDATA[$F{nome}]]></groupExpression>
 		</group>
 		<group name="TOTAL_PRODUTO_DIA">
@@ -60,11 +62,11 @@
 		</group>
 	</subDataset>
 	<queryString>
-		<![CDATA[SELECT JANELA."DATA_VENDA", P.NOME, JANELA."TOTAL_PRODUTO_DIA"
+		<![CDATA[SELECT JANELA."DATA_VENDA", P.NOME, JANELA."TOTAL_PRODUTO_DIA", JANELA."VLR_VENDA", "VLR_VENDA"/"TOTAL_PRODUTO_DIA" AS MEDIA
     FROM JANELA_QUANTIDADE_PRODUTO_DIA JANELA
-    INNER JOIN PRODUTO P
+    INNER JOIN PRODUTO AS P
     ON P.COD_PRODUTO = JANELA."COD_PRODUTO",
-    (SELECT "DATA_VENDA", "COD_PRODUTO", RANK() OVER (PARTITION BY "DATA_VENDA" ORDER BY "TOTAL_PRODUTO_DIA", "COD_PRODUTO") AS PRODUTOS_MAIS_VENDIDOS
+    (SELECT "DATA_VENDA", "COD_PRODUTO", RANK() OVER (PARTITION BY "DATA_VENDA" ORDER BY "TOTAL_PRODUTO_DIA") AS PRODUTOS_MAIS_VENDIDOS
     FROM JANELA_QUANTIDADE_PRODUTO_DIA) SUB
   WHERE PRODUTOS_MAIS_VENDIDOS <=10
   AND SUB."DATA_VENDA" = JANELA."DATA_VENDA"
@@ -74,6 +76,8 @@
 	<field name="DATA_VENDA" class="java.sql.Timestamp"/>
 	<field name="nome" class="java.lang.String"/>
 	<field name="TOTAL_PRODUTO_DIA" class="java.lang.Long"/>
+	<field name="VLR_VENDA" class="java.math.BigDecimal"/>
+	<field name="media" class="java.math.BigDecimal"/>
 	<group name="DATA_VENDA">
 		<groupExpression><![CDATA[$F{DATA_VENDA}]]></groupExpression>
 	</group>
@@ -87,75 +91,120 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="300" splitType="Stretch">
+		<band height="310" splitType="Stretch">
 			<componentElement>
-				<reportElement x="130" y="100" width="290" height="200" uuid="1da692d5-2405-453f-a375-3a3febf94744">
+				<reportElement x="82" y="110" width="390" height="200" uuid="47938b9e-57fc-4d8e-9bf6-b3d9804d151a">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="DOWN_10_PRODUTO_DIARIO" uuid="463183d1-4cf5-45be-bac1-7eb4f9c1d7e9">
+					<datasetRun subDataset="RANKING_PRODUTO" uuid="2ec992f6-3189-480e-823a-be835e87261f">
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:column width="100" uuid="121d2511-08c3-4696-b22f-5ed451140ee0">
+					<jr:column width="80" uuid="6b598020-95df-4855-869c-9c6c103dbe1e">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
 						<jr:tableHeader style="Table_TH" height="30"/>
 						<jr:tableFooter style="Table_TH" height="30"/>
 						<jr:columnHeader style="Table_CH" height="30">
 							<staticText>
-								<reportElement x="0" y="0" width="100" height="30" uuid="3c2b8a8c-0e4e-4fdc-a6cc-d2ead13a3949"/>
-								<text><![CDATA[DATA_VENDA]]></text>
+								<reportElement x="0" y="0" width="80" height="30" uuid="64c73ab9-ee27-4f3b-803d-2ce2e39f84dd"/>
+								<text><![CDATA[Data Venda]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter style="Table_CH" height="30"/>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField>
-								<reportElement x="0" y="0" width="100" height="30" uuid="ec618d54-aa94-4dbb-bca0-94c04e5904d0"/>
+								<reportElement x="0" y="0" width="80" height="30" uuid="a825e691-1f10-47e5-8b29-30c285c6d2b8"/>
 								<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($F{DATA_VENDA})]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="100" uuid="66b443cd-a277-484b-9834-6aa8d837f989">
+					<jr:column width="80" uuid="3c0fb9bd-0c44-4b95-8184-2f94d086b353">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
 						<jr:tableHeader style="Table_TH" height="30"/>
 						<jr:tableFooter style="Table_TH" height="30"/>
 						<jr:columnHeader style="Table_CH" height="30">
 							<staticText>
-								<reportElement x="0" y="0" width="100" height="30" uuid="811868bf-24fa-4361-8f8c-599791cddde5"/>
+								<reportElement x="0" y="0" width="80" height="30" uuid="86560eea-2685-49ea-b064-76cd9f5b1d83"/>
 								<text><![CDATA[Produto]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter style="Table_CH" height="30"/>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField>
-								<reportElement x="0" y="0" width="100" height="30" uuid="1390814c-ec9c-423c-8eec-0848bf672562"/>
+								<reportElement x="0" y="0" width="80" height="30" uuid="64f19aae-2611-43c6-8c70-18b60897353b"/>
 								<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90" uuid="50215d93-458b-4cb5-b562-d1cbd32a30cf">
+					<jr:column width="80" uuid="2f5e8683-225e-42aa-91ba-dc9f12cdfeba">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
 						<jr:tableHeader style="Table_TH" height="30"/>
 						<jr:tableFooter style="Table_TH" height="30"/>
 						<jr:columnHeader style="Table_CH" height="30">
 							<staticText>
-								<reportElement x="0" y="0" width="90" height="30" uuid="e7eaaefe-0556-45cd-ad20-f6af67c1cf7a"/>
-								<text><![CDATA[TOTAL_PRODUTO_DIA]]></text>
+								<reportElement x="0" y="0" width="80" height="30" uuid="14235229-daef-47b5-adb7-b957458d5b1c"/>
+								<text><![CDATA[Total Diário]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter style="Table_CH" height="30"/>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField>
-								<reportElement x="0" y="0" width="90" height="30" uuid="2362e409-b988-4578-8d98-5c9d774a15b7"/>
+								<reportElement x="0" y="0" width="80" height="30" uuid="56485eff-ef42-4c67-b7fa-2ede6960c3a9"/>
 								<textFieldExpression><![CDATA[$F{TOTAL_PRODUTO_DIA}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="c0227ac0-fadc-40cc-87c4-d84fb7409d83">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						<jr:tableHeader style="Table_TH" height="30"/>
+						<jr:tableFooter style="Table_TH" height="30"/>
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="80" height="30" uuid="df1e2b7d-c96c-4ad0-a165-77e929c2a3da"/>
+								<text><![CDATA[Valor Venda]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table_CH" height="30"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="80" height="30" uuid="735682a2-3e9f-40bb-b6e1-0fc9f9a63d91"/>
+								<textFieldExpression><![CDATA[$F{VLR_VENDA}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="420f4493-eada-4627-a340-c7038222a766">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						<jr:tableHeader style="Table_TH" height="30"/>
+						<jr:tableFooter style="Table_TH" height="30"/>
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="80" height="30" uuid="67532227-bab5-4d08-b9fd-d8938e7c5d98"/>
+								<text><![CDATA[Media]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table_CH" height="30"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="80" height="30" uuid="d531e1bb-a4b5-4d8d-bcd4-4dd777f009af"/>
+								<textFieldExpression><![CDATA[new DecimalFormat(".##").format($F{media})]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
 				</jr:table>
 			</componentElement>
 			<staticText>
-				<reportElement x="150" y="30" width="254" height="31" uuid="66152105-eb5d-42ca-aa5e-1ce6b378d248"/>
+				<reportElement x="143" y="40" width="269" height="31" uuid="b7164dd0-b8a3-4ff2-89f7-2ba91502da66"/>
 				<textElement>
 					<font size="20"/>
 				</textElement>
-				<text><![CDATA[Down 10 Produtos (Por Dia)]]></text>
+				<text><![CDATA[DOWN 10 Produtos (Por Dia)]]></text>
 			</staticText>
 		</band>
 	</title>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
 </jasperReport>
