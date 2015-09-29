@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jdbcDataAdapter class="net.sf.jasperreports.data.jdbc.JdbcDataAdapterImpl"><name>Topicos_BD</name><driver>org.postgresql.Driver</driver><username>postgres</username><password>1234</password><savePassword>true</savePassword><url>jdbc:postgresql://localhost:5432/TBMERCADO_LOJA1</url><database></database><serverAddress></serverAddress><classpath>C:\work\apps\ojdbc6.jar</classpath></jdbcDataAdapter>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
-<!-- 2015-09-27T01:24:02 -->
+<!-- 2015-09-28T19:40:12 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TOP_10_CATEGORIA_PRODUTO_ACUMULADO" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="69bbfa0d-7cd2-4688-afb0-00be66b5ded9">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
@@ -35,44 +35,44 @@
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
 		<queryString>
-			<![CDATA[SELECT CAT.NOM_CATEGORIA_PRODUTO, CAT_PROD_ACUM.TOTAL_CAT_PRODUTO_DIA
+			<![CDATA[SELECT CAT.nom_categoria_produto, CAT_PROD_ACUM."TOTAL_CAT_PRODUTO_DIA"
   FROM JANELA_CAT_PROD_ACUM CAT_PROD_ACUM
   INNER JOIN CATEGORIA_PRODUTO CAT
-  ON CAT.COD_CATEGORIA_PRODUTO = CAT_PROD_ACUM.COD_CATEGORIA_PRODUTO,
-    (SELECT COD_CATEGORIA_PRODUTO, TOTAL_CAT_PRODUTO_DIA, 
-      RANK() OVER (ORDER BY TOTAL_CAT_PRODUTO_DIA DESC, COD_CATEGORIA_PRODUTO) AS CATEGORIAS_MAIS_VENDIDAS 
+  ON CAT.COD_CATEGORIA_PRODUTO = CAT_PROD_ACUM."COD_CATEGORIA_PRODUTO",
+    (SELECT "COD_CATEGORIA_PRODUTO", "TOTAL_CAT_PRODUTO_DIA", 
+      RANK() OVER (ORDER BY "TOTAL_CAT_PRODUTO_DIA" DESC, "COD_CATEGORIA_PRODUTO") AS CATEGORIAS_MAIS_VENDIDAS 
   FROM JANELA_CAT_PROD_ACUM) SUB
   WHERE CATEGORIAS_MAIS_VENDIDAS <=10
-  AND SUB.COD_CATEGORIA_PRODUTO = CAT_PROD_ACUM.COD_CATEGORIA_PRODUTO
-  AND SUB.TOTAL_CAT_PRODUTO_DIA = CAT_PROD_ACUM.TOTAL_CAT_PRODUTO_DIA
-  ORDER BY CAT_PROD_ACUM.TOTAL_CAT_PRODUTO_DIA DESC]]>
+  AND SUB."COD_CATEGORIA_PRODUTO" = CAT_PROD_ACUM."COD_CATEGORIA_PRODUTO"
+  AND SUB."TOTAL_CAT_PRODUTO_DIA" = CAT_PROD_ACUM."TOTAL_CAT_PRODUTO_DIA"
+  ORDER BY CAT_PROD_ACUM."TOTAL_CAT_PRODUTO_DIA" DESC]]>
 		</queryString>
-		<field name="NOM_CATEGORIA_PRODUTO" class="java.lang.String"/>
-		<field name="TOTAL_CAT_PRODUTO_DIA" class="java.math.BigDecimal"/>
-		<group name="NOM_CATEGORIA_PRODUTO">
-			<groupExpression><![CDATA[$F{NOM_CATEGORIA_PRODUTO}]]></groupExpression>
+		<field name="nom_categoria_produto" class="java.lang.String"/>
+		<field name="TOTAL_CAT_PRODUTO_DIA" class="java.lang.Long"/>
+		<group name="nom_categoria_produto">
+			<groupExpression><![CDATA[$F{nom_categoria_produto}]]></groupExpression>
 		</group>
 		<group name="TOTAL_CAT_PRODUTO_DIA">
 			<groupExpression><![CDATA[$F{TOTAL_CAT_PRODUTO_DIA}]]></groupExpression>
 		</group>
 	</subDataset>
 	<queryString>
-		<![CDATA[SELECT CAT.NOM_CATEGORIA_PRODUTO, CAT_PROD_ACUM.TOTAL_CAT_PRODUTO_DIA
+		<![CDATA[SELECT CAT.nom_categoria_produto, CAT_PROD_ACUM."TOTAL_CAT_PRODUTO_DIA"
   FROM JANELA_CAT_PROD_ACUM CAT_PROD_ACUM
   INNER JOIN CATEGORIA_PRODUTO CAT
-  ON CAT.COD_CATEGORIA_PRODUTO = CAT_PROD_ACUM.COD_CATEGORIA_PRODUTO,
-    (SELECT COD_CATEGORIA_PRODUTO, TOTAL_CAT_PRODUTO_DIA, 
-      RANK() OVER (ORDER BY TOTAL_CAT_PRODUTO_DIA DESC, COD_CATEGORIA_PRODUTO) AS CATEGORIAS_MAIS_VENDIDAS 
+  ON CAT.COD_CATEGORIA_PRODUTO = CAT_PROD_ACUM."COD_CATEGORIA_PRODUTO",
+    (SELECT "COD_CATEGORIA_PRODUTO", "TOTAL_CAT_PRODUTO_DIA", 
+      RANK() OVER (ORDER BY "TOTAL_CAT_PRODUTO_DIA" DESC, "COD_CATEGORIA_PRODUTO") AS CATEGORIAS_MAIS_VENDIDAS 
   FROM JANELA_CAT_PROD_ACUM) SUB
   WHERE CATEGORIAS_MAIS_VENDIDAS <=10
-  AND SUB.COD_CATEGORIA_PRODUTO = CAT_PROD_ACUM.COD_CATEGORIA_PRODUTO
-  AND SUB.TOTAL_CAT_PRODUTO_DIA = CAT_PROD_ACUM.TOTAL_CAT_PRODUTO_DIA
-  ORDER BY CAT_PROD_ACUM.TOTAL_CAT_PRODUTO_DIA DESC]]>
+  AND SUB."COD_CATEGORIA_PRODUTO" = CAT_PROD_ACUM."COD_CATEGORIA_PRODUTO"
+  AND SUB."TOTAL_CAT_PRODUTO_DIA" = CAT_PROD_ACUM."TOTAL_CAT_PRODUTO_DIA"
+  ORDER BY CAT_PROD_ACUM."TOTAL_CAT_PRODUTO_DIA" DESC]]>
 	</queryString>
-	<field name="NOM_CATEGORIA_PRODUTO" class="java.lang.String"/>
-	<field name="TOTAL_CAT_PRODUTO_DIA" class="java.math.BigDecimal"/>
-	<group name="NOM_CATEGORIA_PRODUTO">
-		<groupExpression><![CDATA[$F{NOM_CATEGORIA_PRODUTO}]]></groupExpression>
+	<field name="nom_categoria_produto" class="java.lang.String"/>
+	<field name="TOTAL_CAT_PRODUTO_DIA" class="java.lang.Long"/>
+	<group name="nom_categoria_produto">
+		<groupExpression><![CDATA[$F{nom_categoria_produto}]]></groupExpression>
 	</group>
 	<group name="TOTAL_CAT_PRODUTO_DIA">
 		<groupExpression><![CDATA[$F{TOTAL_CAT_PRODUTO_DIA}]]></groupExpression>
@@ -96,14 +96,14 @@
 						<jr:columnHeader style="Table_CH" height="30">
 							<staticText>
 								<reportElement x="0" y="0" width="150" height="30" uuid="643ae20f-c911-400f-a872-9e80df0d0c1d"/>
-								<text><![CDATA[NOM_CATEGORIA_PRODUTO]]></text>
+								<text><![CDATA[nom_categoria_produto]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter style="Table_CH" height="30"/>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField>
 								<reportElement x="0" y="0" width="150" height="30" uuid="7ea1a5b5-dbea-4a67-a69a-35497f379ae3"/>
-								<textFieldExpression><![CDATA[$F{NOM_CATEGORIA_PRODUTO}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{nom_categoria_produto}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

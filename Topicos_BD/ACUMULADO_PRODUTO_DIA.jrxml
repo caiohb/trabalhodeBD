@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
-<!-- 2015-09-26T23:36:53 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_1" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isTitleNewPage="true" uuid="4c21eb94-b45e-478f-96ae-b632ba63a18b">
-	<property name="com.jaspersoft.studio.data.sql.tables" value="IkpBTkVMQV9RVUFOVElEQURFIiAsMTUsMTUsZjE3NGJlODQtMGJhNS00MTAzLTk1ZmEtMGQ2MTFm&#xA;NTIxNjVkOw=="/>
+<!-- 2015-09-29T00:25:00 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_1" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isTitleNewPage="true" uuid="4c21eb94-b45e-478f-96ae-b632ba63a18b">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
 	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
 		<box>
@@ -35,15 +35,14 @@
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
 		<queryString>
-			<![CDATA[SELECT DISTINCT JANELA.DATA_VENDA AS DATA_VENDA, QUANTIDADE_TOTAL_PRODUTO_DIA,
-QUANTIDADE_TOTAL_PRODUTO_DIA/SUM(QUANTIDADE_TOTAL_PRODUTO_DIA) OVER () * 100, 2   AS PORCENTAGEM 
+			<![CDATA[SELECT DISTINCT JANELA."DATA_VENDA" AS "DATA_VENDA", "QUANTIDADE_TOTAL_PRODUTO_DIA",
+"QUANTIDADE_TOTAL_PRODUTO_DIA"/SUM("QUANTIDADE_TOTAL_PRODUTO_DIA") OVER () * 100   AS PORCENTAGEM 
   FROM JANELA_QUANTIDADE JANELA
-  ORDER BY JANELA.DATA_VENDA]]>
+  ORDER BY JANELA."DATA_VENDA"]]>
 		</queryString>
 		<field name="DATA_VENDA" class="java.sql.Timestamp"/>
-		<field name="QUANTIDADE_TOTAL_PRODUTO_DIA" class="java.math.BigDecimal"/>
-		<field name="QUANTIDADE_TOTAL_PRODUTO_DIA/SUM(QUANTIDADE_TOTAL_PRODUTO_DIA)OVER()*100" class="java.math.BigDecimal"/>
-		<field name="PORCENTAGEM" class="java.math.BigDecimal"/>
+		<field name="QUANTIDADE_TOTAL_PRODUTO_DIA" class="java.lang.Long"/>
+		<field name="porcentagem" class="java.math.BigDecimal"/>
 		<group name="DATA_VENDA">
 			<groupExpression><![CDATA[$F{DATA_VENDA}]]></groupExpression>
 		</group>
@@ -51,20 +50,21 @@ QUANTIDADE_TOTAL_PRODUTO_DIA/SUM(QUANTIDADE_TOTAL_PRODUTO_DIA) OVER () * 100, 2 
 			<groupExpression><![CDATA[$F{QUANTIDADE_TOTAL_PRODUTO_DIA}]]></groupExpression>
 		</group>
 		<group name="QUANTIDADE_TOTAL_PRODUTO_DIA/SUM(QUANTIDADE_TOTAL_PRODUTO_DIA)OVER()*100">
-			<groupExpression><![CDATA[$F{QUANTIDADE_TOTAL_PRODUTO_DIA/SUM(QUANTIDADE_TOTAL_PRODUTO_DIA)OVER()*100}]]></groupExpression>
+			<groupExpression><![CDATA[$F{porcentagem}]]></groupExpression>
 		</group>
 		<group name="PORCENTAGEM">
-			<groupExpression><![CDATA[$F{PORCENTAGEM}]]></groupExpression>
+			<groupExpression><![CDATA[$F{porcentagem}]]></groupExpression>
 		</group>
 	</subDataset>
 	<queryString>
-		<![CDATA[SELECT DISTINCT JANELA.DATA_VENDA AS DATA_VENDA, QUANTIDADE_TOTAL_PRODUTO_DIA,
-QUANTIDADE_TOTAL_PRODUTO_DIA/SUM(QUANTIDADE_TOTAL_PRODUTO_DIA) OVER () * 100   AS PORCENTAGEM 
+		<![CDATA[SELECT DISTINCT JANELA."DATA_VENDA" AS "DATA_VENDA", "QUANTIDADE_TOTAL_PRODUTO_DIA",
+"QUANTIDADE_TOTAL_PRODUTO_DIA"/SUM("QUANTIDADE_TOTAL_PRODUTO_DIA") OVER () * 100   AS PORCENTAGEM 
   FROM JANELA_QUANTIDADE JANELA
-  ORDER BY JANELA.DATA_VENDA]]>
+  ORDER BY JANELA."DATA_VENDA"]]>
 	</queryString>
 	<field name="DATA_VENDA" class="java.sql.Timestamp"/>
-	<field name="QUANTIDADE_TOTAL_PRODUTO_DIA" class="java.lang.Integer"/>
+	<field name="QUANTIDADE_TOTAL_PRODUTO_DIA" class="java.lang.Long"/>
+	<field name="porcentagem" class="java.math.BigDecimal"/>
 	<variable name="DATA_VENDA1" class="java.lang.Integer" resetType="Page" calculation="DistinctCount">
 		<variableExpression><![CDATA[$F{DATA_VENDA}]]></variableExpression>
 	</variable>
@@ -91,7 +91,7 @@ QUANTIDADE_TOTAL_PRODUTO_DIA/SUM(QUANTIDADE_TOTAL_PRODUTO_DIA) OVER () * 100   A
 						<jr:columnHeader style="Table_CH" height="30">
 							<staticText>
 								<reportElement x="0" y="0" width="100" height="30" uuid="29a2afe8-937e-4eb1-8479-f3cbf3098c84"/>
-								<text><![CDATA[DATA_VENDA]]></text>
+								<text><![CDATA[Data Venda]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter style="Table_CH" height="30"/>
@@ -109,7 +109,7 @@ QUANTIDADE_TOTAL_PRODUTO_DIA/SUM(QUANTIDADE_TOTAL_PRODUTO_DIA) OVER () * 100   A
 						<jr:columnHeader style="Table_CH" height="30">
 							<staticText>
 								<reportElement x="0" y="0" width="100" height="30" uuid="f052fc28-65f5-4819-a893-700f6b353c43"/>
-								<text><![CDATA[QUANTIDADE_TOTAL_PRODUTO_DIA]]></text>
+								<text><![CDATA[Quantidade Total]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter style="Table_CH" height="30"/>
@@ -127,14 +127,14 @@ QUANTIDADE_TOTAL_PRODUTO_DIA/SUM(QUANTIDADE_TOTAL_PRODUTO_DIA) OVER () * 100   A
 						<jr:columnHeader style="Table_CH" height="30">
 							<staticText>
 								<reportElement x="0" y="0" width="100" height="30" uuid="7b018dd0-a664-47aa-b5e2-69698cb48d85"/>
-								<text><![CDATA[PORCENTAGEM]]></text>
+								<text><![CDATA[Porcentagem]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter style="Table_CH" height="30"/>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField>
 								<reportElement x="0" y="0" width="100" height="30" uuid="42d78c91-8b73-4107-bf3d-1418dedb702a"/>
-								<textFieldExpression><![CDATA[FIXED($F{QUANTIDADE_TOTAL_PRODUTO_DIA/SUM(QUANTIDADE_TOTAL_PRODUTO_DIA)OVER()*100},2,true)]]></textFieldExpression>
+								<textFieldExpression><![CDATA[FIXED($F{porcentagem},2,true)]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

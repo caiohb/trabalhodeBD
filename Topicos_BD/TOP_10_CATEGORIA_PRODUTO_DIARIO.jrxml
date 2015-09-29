@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
+<!-- 2015-09-28T22:12:41 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TOP_10_CATEGORIA_PRODUTO_DIARIO" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="07748a5a-d624-4034-98da-054e2ecda649">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
+	<queryString>
+		<![CDATA[SELECT CAT_DIA.DATA_VENDA, CAT_DIA.COD_CATEGORIA_PRODUTO, CAT_DIA.TOTAL_CAT_PRODUTO_DIA
+  FROM JANELA_QTDE_CAT_PROD_DIA CAT_DIA,
+  (SELECT DATA_VENDA, COD_CATEGORIA_PRODUTO, TOTAL_CAT_PRODUTO_DIA,
+    RANK() OVER (PARTITION BY DATA_VENDA, COD_CATEGORIA_PRODUTO ORDER BY  TOTAL_CAT_PRODUTO_DIA DESC, COD_CATEGORIA_PRODUTO) AS RANKING
+  FROM JANELA_QTDE_CAT_PROD_DIA) SUB
+  WHERE RANKING <= 10
+  AND SUB.DATA_VENDA = CAT_DIA.DATA_VENDA
+  AND SUB.COD_CATEGORIA_PRODUTO = CAT_DIA.COD_CATEGORIA_PRODUTO
+  AND SUB.TOTAL_CAT_PRODUTO_DIA = CAT_DIA.TOTAL_CAT_PRODUTO_DIA
+  ORDER BY CAT_DIA.DATA_VENDA, CAT_DIA.TOTAL_CAT_PRODUTO_DIA DESC]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+</jasperReport>

@@ -6,6 +6,7 @@
 package Windows;
 
 import Connector.Connector;
+import exception.InterfaceException;
 import java.nio.file.Files;
 import javax.swing.JFrame;
 
@@ -19,7 +20,13 @@ public class PrincipalWindow extends javax.swing.JFrame {
 
     public PrincipalWindow() {
         initComponents();
-        connect.openConnection();
+        try{
+            connect.openConnection();
+        }catch (InterfaceException e){
+            e.printStackTrace();
+            System.exit(0);
+        }
+        
     }
 
 

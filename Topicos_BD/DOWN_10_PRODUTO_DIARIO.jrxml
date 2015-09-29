@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
-<!-- 2015-09-27T00:15:44 -->
+<!-- 2015-09-28T20:46:05 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DOWN_10_PRODUTO_DIARIO" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0e4811eb-3b6b-4ea9-b9ad-6fa6b90d5b62">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
@@ -35,46 +35,50 @@
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
 		<queryString>
-			<![CDATA[SELECT JANELA.DATA_VENDA, JANELA.COD_PRODUTO, JANELA.TOTAL_PRODUTO_DIA
-    FROM JANELA_QUANTIDADE_PRODUTO_DIA JANELA,
-    (SELECT DATA_VENDA, COD_PRODUTO, RANK() OVER (PARTITION BY DATA_VENDA ORDER BY TOTAL_PRODUTO_DIA, COD_PRODUTO) AS PRODUTOS_MAIS_VENDIDOS
+			<![CDATA[SELECT JANELA."DATA_VENDA", P.NOME, JANELA."TOTAL_PRODUTO_DIA"
+    FROM JANELA_QUANTIDADE_PRODUTO_DIA JANELA
+    INNER JOIN PRODUTO P
+    ON P.COD_PRODUTO = JANELA."COD_PRODUTO",
+    (SELECT "DATA_VENDA", "COD_PRODUTO", RANK() OVER (PARTITION BY "DATA_VENDA" ORDER BY "TOTAL_PRODUTO_DIA", "COD_PRODUTO") AS PRODUTOS_MAIS_VENDIDOS
     FROM JANELA_QUANTIDADE_PRODUTO_DIA) SUB
   WHERE PRODUTOS_MAIS_VENDIDOS <=10
-  AND SUB.DATA_VENDA = JANELA.DATA_VENDA
-  AND SUB.COD_PRODUTO = JANELA.COD_PRODUTO
-  ORDER BY DATA_VENDA, TOTAL_PRODUTO_DIA, COD_PRODUTO]]>
+  AND SUB."DATA_VENDA" = JANELA."DATA_VENDA"
+  AND SUB."COD_PRODUTO" = JANELA."COD_PRODUTO"
+  ORDER BY "DATA_VENDA", "TOTAL_PRODUTO_DIA", JANELA."COD_PRODUTO"]]>
 		</queryString>
 		<field name="DATA_VENDA" class="java.sql.Timestamp"/>
-		<field name="COD_PRODUTO" class="java.math.BigDecimal"/>
-		<field name="TOTAL_PRODUTO_DIA" class="java.math.BigDecimal"/>
+		<field name="nome" class="java.lang.String"/>
+		<field name="TOTAL_PRODUTO_DIA" class="java.lang.Long"/>
 		<group name="DATA_VENDA">
 			<groupExpression><![CDATA[$F{DATA_VENDA}]]></groupExpression>
 		</group>
-		<group name="COD_PRODUTO">
-			<groupExpression><![CDATA[$F{COD_PRODUTO}]]></groupExpression>
+		<group name="nome">
+			<groupExpression><![CDATA[$F{nome}]]></groupExpression>
 		</group>
 		<group name="TOTAL_PRODUTO_DIA">
 			<groupExpression><![CDATA[$F{TOTAL_PRODUTO_DIA}]]></groupExpression>
 		</group>
 	</subDataset>
 	<queryString>
-		<![CDATA[SELECT JANELA.DATA_VENDA, JANELA.COD_PRODUTO, JANELA.TOTAL_PRODUTO_DIA
-    FROM JANELA_QUANTIDADE_PRODUTO_DIA JANELA,
-    (SELECT DATA_VENDA, COD_PRODUTO, RANK() OVER (PARTITION BY DATA_VENDA ORDER BY TOTAL_PRODUTO_DIA, COD_PRODUTO) AS PRODUTOS_MAIS_VENDIDOS
+		<![CDATA[SELECT JANELA."DATA_VENDA", P.NOME, JANELA."TOTAL_PRODUTO_DIA"
+    FROM JANELA_QUANTIDADE_PRODUTO_DIA JANELA
+    INNER JOIN PRODUTO P
+    ON P.COD_PRODUTO = JANELA."COD_PRODUTO",
+    (SELECT "DATA_VENDA", "COD_PRODUTO", RANK() OVER (PARTITION BY "DATA_VENDA" ORDER BY "TOTAL_PRODUTO_DIA", "COD_PRODUTO") AS PRODUTOS_MAIS_VENDIDOS
     FROM JANELA_QUANTIDADE_PRODUTO_DIA) SUB
   WHERE PRODUTOS_MAIS_VENDIDOS <=10
-  AND SUB.DATA_VENDA = JANELA.DATA_VENDA
-  AND SUB.COD_PRODUTO = JANELA.COD_PRODUTO
-  ORDER BY DATA_VENDA, TOTAL_PRODUTO_DIA, COD_PRODUTO]]>
+  AND SUB."DATA_VENDA" = JANELA."DATA_VENDA"
+  AND SUB."COD_PRODUTO" = JANELA."COD_PRODUTO"
+  ORDER BY "DATA_VENDA", "TOTAL_PRODUTO_DIA", JANELA."COD_PRODUTO"]]>
 	</queryString>
 	<field name="DATA_VENDA" class="java.sql.Timestamp"/>
-	<field name="COD_PRODUTO" class="java.math.BigDecimal"/>
-	<field name="TOTAL_PRODUTO_DIA" class="java.math.BigDecimal"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="TOTAL_PRODUTO_DIA" class="java.lang.Long"/>
 	<group name="DATA_VENDA">
 		<groupExpression><![CDATA[$F{DATA_VENDA}]]></groupExpression>
 	</group>
 	<group name="COD_PRODUTO">
-		<groupExpression><![CDATA[$F{COD_PRODUTO}]]></groupExpression>
+		<groupExpression><![CDATA[$F{nome}]]></groupExpression>
 	</group>
 	<group name="TOTAL_PRODUTO_DIA">
 		<groupExpression><![CDATA[$F{TOTAL_PRODUTO_DIA}]]></groupExpression>
@@ -115,14 +119,14 @@
 						<jr:columnHeader style="Table_CH" height="30">
 							<staticText>
 								<reportElement x="0" y="0" width="100" height="30" uuid="811868bf-24fa-4361-8f8c-599791cddde5"/>
-								<text><![CDATA[COD_PRODUTO]]></text>
+								<text><![CDATA[Produto]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter style="Table_CH" height="30"/>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField>
 								<reportElement x="0" y="0" width="100" height="30" uuid="1390814c-ec9c-423c-8eec-0848bf672562"/>
-								<textFieldExpression><![CDATA[$F{COD_PRODUTO}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

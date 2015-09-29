@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
-<!-- 2015-09-27T00:51:52 -->
+<!-- 2015-09-28T19:45:24 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TOP_10_PRODUTO_ACUMULADO" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="22fb4526-468b-4b50-a49b-9c0623b2ba88">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
@@ -35,40 +35,40 @@
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
 		<queryString>
-			<![CDATA[SELECT PROD.NOME, PROD_ACUM.TOTAL_PRODUTO_ACUM
+			<![CDATA[SELECT PROD.NOME, PROD_ACUM."TOTAL_PRODUTO_ACUM"
 	FROM JANELA_QTDE_PROD_ACUM PROD_ACUM 
   INNER JOIN PRODUTO PROD
-  ON PROD.COD_PRODUTO = PROD_ACUM.COD_PRODUTO,
-	(SELECT COD_PRODUTO, TOTAL_PRODUTO_ACUM, RANK() OVER (ORDER BY TOTAL_PRODUTO_ACUM DESC) AS RANKING
+  ON PROD.COD_PRODUTO = PROD_ACUM."COD_PRODUTO",
+	(SELECT "COD_PRODUTO", "TOTAL_PRODUTO_ACUM", RANK() OVER (ORDER BY "TOTAL_PRODUTO_ACUM" DESC) AS RANKING
 		FROM JANELA_QTDE_PROD_ACUM) SUB
 	WHERE RANKING <=10
-	AND SUB.COD_PRODUTO = PROD_ACUM.COD_PRODUTO
-	ORDER BY PROD_ACUM.TOTAL_PRODUTO_ACUM DESC]]>
+	AND SUB."COD_PRODUTO" = PROD_ACUM."COD_PRODUTO"
+	ORDER BY PROD_ACUM."TOTAL_PRODUTO_ACUM" DESC]]>
 		</queryString>
-		<field name="NOME" class="java.lang.String"/>
-		<field name="TOTAL_PRODUTO_ACUM" class="java.math.BigDecimal"/>
+		<field name="nome" class="java.lang.String"/>
+		<field name="TOTAL_PRODUTO_ACUM" class="java.lang.Long"/>
 		<group name="COD_PRODUTO">
-			<groupExpression><![CDATA[$F{NOME}]]></groupExpression>
+			<groupExpression><![CDATA[$F{nome}]]></groupExpression>
 		</group>
 		<group name="TOTAL_PRODUTO_ACUM">
 			<groupExpression><![CDATA[$F{TOTAL_PRODUTO_ACUM}]]></groupExpression>
 		</group>
 	</subDataset>
 	<queryString>
-		<![CDATA[SELECT PROD.NOME, PROD_ACUM.COD_PRODUTO, PROD_ACUM.TOTAL_PRODUTO_ACUM
+		<![CDATA[SELECT PROD.nome, PROD_ACUM."TOTAL_PRODUTO_ACUM"
 	FROM JANELA_QTDE_PROD_ACUM PROD_ACUM 
   INNER JOIN PRODUTO PROD
-  ON PROD.COD_PRODUTO = PROD_ACUM.COD_PRODUTO,
-	(SELECT COD_PRODUTO, TOTAL_PRODUTO_ACUM, RANK() OVER (ORDER BY TOTAL_PRODUTO_ACUM DESC) AS RANKING
+  ON PROD.COD_PRODUTO = PROD_ACUM."COD_PRODUTO",
+	(SELECT "COD_PRODUTO", "TOTAL_PRODUTO_ACUM", RANK() OVER (ORDER BY "TOTAL_PRODUTO_ACUM" DESC) AS RANKING
 		FROM JANELA_QTDE_PROD_ACUM) SUB
 	WHERE RANKING <=10
-	AND SUB.COD_PRODUTO = PROD_ACUM.COD_PRODUTO
-	ORDER BY PROD_ACUM.TOTAL_PRODUTO_ACUM DESC]]>
+	AND SUB."COD_PRODUTO" = PROD_ACUM."COD_PRODUTO"
+	ORDER BY PROD_ACUM."TOTAL_PRODUTO_ACUM" DESC]]>
 	</queryString>
-	<field name="NOME" class="java.lang.String"/>
-	<field name="TOTAL_PRODUTO_ACUM" class="java.math.BigDecimal"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="TOTAL_PRODUTO_ACUM" class="java.lang.Long"/>
 	<group name="COD_PRODUTO">
-		<groupExpression><![CDATA[$F{NOME}]]></groupExpression>
+		<groupExpression><![CDATA[$F{nome}]]></groupExpression>
 	</group>
 	<group name="TOTAL_PRODUTO_ACUM">
 		<groupExpression><![CDATA[$F{TOTAL_PRODUTO_ACUM}]]></groupExpression>
@@ -99,14 +99,14 @@
 						<jr:columnHeader style="Table_CH" height="30">
 							<staticText>
 								<reportElement x="0" y="0" width="150" height="30" uuid="8bc6edcb-a71a-4ec5-b191-e2299f087f41"/>
-								<text><![CDATA[NOME PRODUTO]]></text>
+								<text><![CDATA[Produto]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter style="Table_CH" height="30"/>
 						<jr:detailCell style="Table_TD" height="30">
 							<textField>
 								<reportElement x="0" y="0" width="150" height="30" uuid="e797017c-b799-45e9-a477-029a161b6ce3"/>
-								<textFieldExpression><![CDATA[$F{NOME}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
